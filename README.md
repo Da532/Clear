@@ -4,4 +4,4 @@ This bot's purpose is to nuke DM's and messages you don't want lingering. Requir
 
 # Usage
 
--clear NUMBEER_OF_MESSAGES
+-clear NUMBER_OF_MESSAGES
