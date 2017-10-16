@@ -25,7 +25,10 @@ async def on_ready():
 async def clear(ctx, limit: int=None):
     async for msg in bot.logs_from(ctx.message.channel, limit=limit):
         if msg.author:
-            await bot.delete_message(msg)
+            try:
+                await bot.delete_message(msg)
+            except:
+                pass
     embed = discord.Embed(description="Action completed! :smile:", color=0x00ff00)
     await bot.say (embed=embed)
 
