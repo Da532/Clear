@@ -3,34 +3,36 @@
 
 #---CONFIG---
 
-token = "TOKEN_HERE" # To find this, press CTRL + SHIFT + i in the Discord client revealing the inspect element prompt. Click the arrows, head over to Application, local storage and there you can find your user token :)
-prefix = "!" # This defines the selfbot prefix. You can customize it however you like, but you should probably keep it tiny
+token = "TOKEN_HERE" # https://www.youtube.com/watch?v=tI1lzqzLQCs
+prefix = "!" # This defines the selfbot prefix. You can customize it however you like, but you should probably keep it tiny.
 
 #--- BOT ---
 
 import discord
-from discord.ext.commands import Bot
 from discord.ext import commands
-import asyncio
+
+print("[Info] Logging into Discord")
 
 bot = commands.Bot(command_prefix=prefix, self_bot=True)
 bot.remove_command("help")
 
 @bot.event
 async def on_ready():
-    print ("Ready when you are. ;)") 
-    print ("Name: {}".format(bot.user.name))
-    print ("ID: {}".format(bot.user.id))
+    print("\n\n[Welcome] Ready! I await your command..") 
+    print(f"[Welcome] Name: {bot.user.name}")
+    print(f"[Welcome] ID: {bot.user.id}\n\n")
 
-@bot.command(pass_context=True)
+@bot.command()
 async def clear(ctx, limit: int=None):
-    async for msg in bot.logs_from(ctx.message.channel, limit=limit):
+    passed = 0
+    failed = 0
+    async for msg in ctx.message.channel.history(limit=limit):
         if msg.author.id == bot.user.id:
             try:
-                await bot.delete_message (msg)
+                await msg.delete()
+                passed += 1
             except:
-                pass
-    embed = discord.Embed(description="Action completed! :smile:", color=0x00ff00)
-    await bot.say (embed=embed)
+                failed += 1
+    print(f"[Complete] Removed {passed} messages with {failed} fails")
 
 bot.run(token, bot=False)
